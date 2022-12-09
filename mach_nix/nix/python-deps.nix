@@ -1,13 +1,13 @@
 {python, fetchurl, ...}:
 rec {
-  distlib = python.pkgs.buildPythonPackage {
-    name = "distlib-0.3.3";
-    src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/56/ed/9c876a62efda9901863e2cc8825a13a7fcbda75b4b498103a4286ab1653b/distlib-0.3.3.zip";
-      sha256 = "01bbw4gm64fvdnlylqhsy3fhxs4yjhfnk3pcwassmspn3xsx10nr";
-    };
-    doCheck = false;
-  };
+  # distlib = python.pkgs.buildPythonPackage {
+  #   name = "distlib-0.3.3";
+  #   src = fetchurl {
+  #     url = "https://files.pythonhosted.org/packages/56/ed/9c876a62efda9901863e2cc8825a13a7fcbda75b4b498103a4286ab1653b/distlib-0.3.3.zip";
+  #     sha256 = "01bbw4gm64fvdnlylqhsy3fhxs4yjhfnk3pcwassmspn3xsx10nr";
+  #   };
+  #   doCheck = false;
+  # };
   resolvelib = python.pkgs.buildPythonPackage {
     name = "resolvelib-0.8.1";
     src = fetchurl {
@@ -25,6 +25,7 @@ rec {
     doCheck = false;
   };
 
+  distlib = python.pkgs.distlib;
   networkx = python.pkgs.networkx;
   packaging = python.pkgs.packaging;
   setuptools = python.pkgs.setuptools;
