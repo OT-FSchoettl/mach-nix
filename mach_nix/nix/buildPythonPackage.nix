@@ -47,7 +47,7 @@ let
         else
           requirements)
         + "\n" + requirementsExtra;
-      py = python_pkg.override { packageOverrides = l.mergeOverrides overridesPre; };
+      py = pkgs.lib.recursiveUpdate python_pkg { packageOverrides = l.mergeOverrides overridesPre; };
       result = l.compileOverrides {
         inherit condaChannelsExtra condaDataRev condaDataSha256 pkgs
                 providers pypiData tests _providerDefaults;
@@ -55,7 +55,7 @@ let
         python = py;
         requirements = reqs;
       };
-      py_final = python_pkg.override { packageOverrides = l.mergeOverrides (
+      py_final = pkgs.lib.recursiveUpdate python_pkg { packageOverrides = l.mergeOverrides (
         overridesPre
         ++ [ result.overrides ]
         ++ (l.fixes_to_overrides _fixes)

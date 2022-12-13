@@ -93,7 +93,7 @@ let
       overrides_post_extra = flatten (map (p: p.passthru.overridesPost) extra_pkgs_python);
       extra_pkgs_providers = builtins.mapAttrs (n: p: "nixpkgs") extra_pkgs_python_attrs;
 
-      py = python_pkg.override { packageOverrides = l.mergeOverrides overridesPre; };
+      py = pkgs.lib.recursiveUpdate python_pkg { packageOverrides = l.mergeOverrides overridesPre; };
       result = l.compileOverrides {
         inherit condaChannelsExtra condaDataRev condaDataSha256 pkgs pypiData tests _providerDefaults;
         overrides = overridesPre ++ overrides_pre_extra ++ extra_pkgs_py_overrides;
@@ -118,7 +118,7 @@ let
         ++ overrides_simple_extra ++ (l.simple_overrides _)
         ++ [ override_selectPkgs ]
       );
-      py_final = python_pkg.override { packageOverrides = all_overrides;};
+      py_final = pkgs.lib.recursiveUpdate python_pkg { packageOverrides = all_overrides;};
       py_final_with_pkgs = (py_final.withPackages (ps: selectPkgs ps)).overrideAttrs (oa:{
         postBuild = ''
           ${l.condaSymlinkJoin (flatten (map (p: p.allCondaDeps or []) (selectPkgs py_final.pkgs))) }
@@ -142,7 +142,7 @@ let
               py_attr_name = "python${pyver.major}${pyver.minor}";
             in
               {
-                "${py_attr_name}" = super."${py_attr_name}".override {
+                "${py_attr_name}" = pkgs.lib.recursiveUpdate super."${py_attr_name}" {
                   packageOverrides = pythonOverrides;
                 };
               };

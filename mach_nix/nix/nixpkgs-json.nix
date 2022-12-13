@@ -17,7 +17,7 @@ let
     pytorch = "torch";
   };
 
-  py = python.override { packageOverrides = mergeOverrides ( overrides ++ [ pnamePassthruOverride ] ); };
+  py = pkgs.lib.recursiveUpdate python { packageOverrides = mergeOverrides ( overrides ++ [ pnamePassthruOverride ] ); };
 
   l = import ./lib.nix { inherit (pkgs) lib; inherit pkgs; };
 in
